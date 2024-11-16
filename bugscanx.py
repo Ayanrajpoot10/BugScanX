@@ -122,7 +122,7 @@ def main_menu():
             hosts, ports, output_file, threads, method = sub_scan.get1_scan_inputs()
             if hosts is None:
                 continue
-            sub_scan.perform_scan(hosts, ports, output_file, threads, method)
+            sub_scan.perform1_scan(hosts, ports, output_file, threads, method)
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
         elif choice == "3":
