@@ -6,6 +6,8 @@ import threading
 # Lock for managing file writes safely in a multi-threaded environment
 file_write_lock = threading.Lock()
 
+
+
 def install_requirements():
     """
     Function to install the required Python packages.
@@ -19,7 +21,8 @@ def install_requirements():
         'socket': 'socket',
         'ssl': 'ssl',
         'beautifulsoup4': 'bs4',
-        'dnspython': 'dns'
+        'dnspython': 'dns',
+        'multithreading': 'multithreading'
     }
 
     # Iterating through each required package and checking for installation
@@ -41,11 +44,15 @@ import pyfiglet
 # Initialize colorama to automatically reset styles after each print
 init(autoreset=True)
 
+
+
 def clear_screen():
     """
     Function to clear the terminal screen based on the operating system.
     """
     os.system('cls' if os.name == 'nt' else 'clear')
+
+
 
 def text_to_ascii_banner(text, font="doom", color=Fore.WHITE):
     """
@@ -64,6 +71,8 @@ def text_to_ascii_banner(text, font="doom", color=Fore.WHITE):
     except pyfiglet.FontNotFound:
         return "Font not found. Please choose a valid font."
 
+
+
 def get_input(prompt, default=None):
     """
     Utility function to get user input with a prompt.
@@ -72,6 +81,8 @@ def get_input(prompt, default=None):
     response = input(prompt + Style.BRIGHT).strip()
     print(Style.RESET_ALL)
     return response if response else default or ""
+
+
 
 def banner():
     """
@@ -82,8 +93,10 @@ def banner():
     print(text_to_ascii_banner("BugScanX ", font="doom", color=Style.BRIGHT + Fore.MAGENTA))
     print(Fore.MAGENTA + "  ©️ Owner: " + Fore.LIGHTMAGENTA_EX + Style.BRIGHT + "Ayan Rajpoot")
     print(Fore.BLUE + " 🔗 Support: " + Style.BRIGHT + Fore.LIGHTBLUE_EX + "https://t.me/BugScanX")
-    print(Fore.LIGHTGREEN_EX +"\nThis is a test version. Report bugs on Telegram for quick fixes")
+    print(Fore.WHITE + Style.DIM +"\nThis is a test version. Report bugs on Telegram for quick fixes")
     print(Style.RESET_ALL)
+
+
 
 def main_menu():
     """
@@ -94,15 +107,15 @@ def main_menu():
         banner()
         print(Fore.LIGHTCYAN_EX + Style.BRIGHT + "Please select an option:"+ Style.RESET_ALL)
         print(Fore.LIGHTYELLOW_EX + Style.BRIGHT + " [1] ⚡  Host Scanner(only for pro)")
-        print(Fore.YELLOW + " [2] 🖥️   Subdomains Scanner ")
-        print(Fore.YELLOW + " [3] 📡  IP Addresses Scanner")
-        print(Fore.YELLOW + " [4] 🌐  Subdomains Finder")
-        print(Fore.YELLOW + " [5] 🔍  domains hosted on same ip")
-        print(Fore.YELLOW + " [6] ✂️   TXT Toolkit")
-        print(Fore.YELLOW + " [7] 🔓  Open Port Checker")
-        print(Fore.YELLOW + " [8] 📜  DNS Records")
-        print(Fore.YELLOW + " [9] 📖  Help")
-        print(Fore.RED + " [10]⛔  Exit\n")
+        print(Fore.LIGHTYELLOW_EX + " [2] 🖥️   Subdomains Scanner ")
+        print(Fore.LIGHTYELLOW_EX + " [3] 📡  IP Addresses Scanner")
+        print(Fore.LIGHTYELLOW_EX + " [4] 🌐  Subdomains Finder")
+        print(Fore.LIGHTYELLOW_EX + " [5] 🔍  domains hosted on same ip")
+        print(Fore.LIGHTYELLOW_EX + " [6] ✂️   TXT Toolkit")
+        print(Fore.LIGHTYELLOW_EX + " [7] 🔓  Open Port Checker")
+        print(Fore.LIGHTYELLOW_EX + " [8] 📜  DNS Records")
+        print(Fore.LIGHTYELLOW_EX + " [9] 📖  Help")
+        print(Fore.LIGHTRED_EX + Style.BRIGHT + " [10]⛔  Exit\n" + Style.RESET_ALL)
 
         # Get the user's choice
         choice = get_input(Fore.CYAN + " ➜  Enter your choice (1-10): ").strip()
@@ -114,7 +127,7 @@ def main_menu():
             import modules.host_scanner as host_scanner
             host_scanner.advance_main()
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
-        # Menu option handling
+
         if choice == "2":
             clear_screen()
             print(text_to_ascii_banner("HOST Scanner", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
@@ -122,20 +135,19 @@ def main_menu():
             hosts, ports, output_file, threads, method = sub_scan.get1_scan_inputs()
             if hosts is None:
                 continue
-            sub_scan.perform_scan(hosts, ports, output_file, threads, method)
+            sub_scan.perform1_scan(hosts, ports, output_file, threads, method)
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
         elif choice == "3":
             clear_screen()
             print(text_to_ascii_banner("IP Scanner  ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
             import modules.ip_scan as ip_scan
-            hosts, ports, output_file, threads, http_method = ip_scan.get_scan_inputs()
+            hosts, ports, output_file, threads, method = ip_scan.get_scan_inputs()
 
-            if not all([hosts, ports, output_file, threads, http_method]):
-                print(Fore.YELLOW + "Returning to main menu...")
+            if hosts is None:
                 continue
 
-            ip_scan.perform_scan(hosts, ports, output_file, threads, http_method)
+            ip_scan.perform_scan(hosts, ports, output_file, threads, method)
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
         elif choice == "4":
@@ -194,7 +206,13 @@ def main_menu():
         else:
             print(Fore.RED + Style.BRIGHT + "\n⚠️ Invalid choice. Please select a valid option.")
             input(Fore.YELLOW + Style.BRIGHT + "\n Press Enter to return to the main menu...")
-            main_menu()  # Reload the menu for a new choice
+            main_menu() 
+
+def new_func(hosts, ports, output_file, threads, method):
+    if not all([hosts, ports, output_file, threads, method]):
+        print(Fore.YELLOW + "Returning to main menu...") # Reload the menu for a new choice
+
+
 
 # Run the menu
 if __name__ == "__main__":

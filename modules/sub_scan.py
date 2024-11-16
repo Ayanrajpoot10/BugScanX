@@ -35,7 +35,7 @@ def get_hosts_from_file(file_path):
 def get1_http_method():
     methods = ['GET', 'POST', 'PATCH', 'OPTIONS', 'PUT', 'DELETE', 'TRACE', 'HEAD']
     print(Fore.LIGHTCYAN_EX + Style.BRIGHT + "🌐 Available HTTP methods: " + ", ".join(methods))
-    method = get_input(Fore.CYAN+"\n↪ Select an HTTP method (default: HEAD): ", "HEAD").upper()
+    method = get_input(Fore.CYAN+"\n ➜  Select an HTTP method (default: HEAD): ", "HEAD").upper()
     return method if method in methods else "HEAD"
 
 

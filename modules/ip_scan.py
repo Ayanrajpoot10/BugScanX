@@ -70,7 +70,7 @@ def get_http_method():
     """Prompts for an HTTP method and validates it."""
     methods = ['GET', 'POST', 'PATCH', 'OPTIONS', 'PUT', 'DELETE', 'TRACE', 'HEAD']
     print(Fore.CYAN + "🌐 Available HTTP methods: " + ", ".join(methods))
-    method = input("Select an HTTP method (default: HEAD): ").strip().upper() or "HEAD"
+    method = input(Fore.CYAN + " ➜  Select an HTTP method (default: HEAD): ").strip().upper() or "HEAD"
     return method if method in methods else "HEAD"
 
 
@@ -139,7 +139,9 @@ def get_scan_inputs():
         except ValueError:
             print(Fore.RED + "⚠️ Invalid input. Please enter a valid integer for the number of threads.")
             
-    return hosts, ports, output_file, threads, None  # Assuming None as placeholder for http_method or similar
+    http_method = get_http_method()  
+
+    return hosts, ports, output_file, threads, http_method,  # Assuming None as placeholder for http_method or similar
 
 
 def format_row(code, server, port, host, use_colors=True):
