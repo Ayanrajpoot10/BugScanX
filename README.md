@@ -3,7 +3,6 @@
 
 # 🌐 BugScanX - Advanced Network Toolkit for SNI Bughost Analysis
 
-![Banner](https://your-image-link-here.com)  <!-- Add a relevant banner image link -->
 
 **BugScanX is a specialized toolkit by Ayan Rajpoot for identifying SNI bug hosts often used in free internet configurations. This script offers a range of utilities to analyze subdomains, scan IP addresses, retrieve DNS records, and more.**
 
@@ -59,7 +58,7 @@ pip install requests colorama ipaddress pyfiglet socket ssl beautifulsoup4 dnspy
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/ayanrajpoot10/BugScanx.git
+git clone https://github.com/ayanrajpoot10/BugScanX.git
 cd BugScanX
 ```
 
@@ -102,7 +101,7 @@ This project is licensed under the MIT License.
 Contributions are welcome! Open an issue or submit a pull request.
 
 ## 📞 Support
-For support, join our Telegram channel: [BugScanX](https://t.me/your_channel_link)
+For support, join our Telegram channel: [BugScanX](https://t.me/BugScanX)
 
 ---
 
