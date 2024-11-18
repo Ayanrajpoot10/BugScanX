@@ -1,56 +1,49 @@
-name: Release Workflow
+name: Publish to PyPI and Create GitHub Release
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'  # This triggers on version tag pushes like v0.1, v0.2, etc.
+  # Trigger when a new release is created
+  release:
+    types:
+      - created
 
 jobs:
-  release:
-    runs-on: ubuntu-latest  # The runner will be Ubuntu, which is commonly used in GitHub Actions.
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
-      - name: Checkout code
+      # Step 1: Check out the code from the repository
+      - name: Check out code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python (ensure the correct version)
+      # Step 2: Set up Python environment
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.8'  # Adjust based on your required Python version
+          python-version: 3.x  # Use Python 3.x
 
-      # Step 3: Install dependencies
+      # Step 3: Upgrade pip and install dependencies for building and publishing
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Install your dependencies
-          pip install setuptools wheel twine  # For packaging and uploading to PyPI
+          python3 -m pip install --upgrade pip
+          pip install setuptools wheel twine
 
-      # Step 4: Build the package (this creates the .tar.gz and .whl files)
-      - name: Build package
+      # Step 4: Build the package
+      - name: Build the package
         run: |
-          python setup.py sdist bdist_wheel
+          python3 setup.py sdist bdist_wheel
 
-      # Step 5: Upload package to PyPI using Twine
-      - name: Upload to PyPI
-        run: |
-          python -m twine upload dist/*  # Upload to PyPI (requires TWINE_USERNAME and TWINE_PASSWORD)
-
+      # Step 5: Upload the package to PyPI
+      - name: Publish to PyPI
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}  # Set these in GitHub Secrets
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_USERNAME: ${{ secrets.PYPI_USER }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          python3 -m twine upload dist/*
 
-      # Step 6: Create a GitHub Release
-      - name: Create Release
-        uses: ghcli/gh-release-action@v1  # Action to create a release
+      # Step 6: Create GitHub Release (optional)
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}  # Use the tag name (e.g., v0.1)
-          release_name: Release ${{ github.ref }}
-          body: |
-            ## Changelog
-            - Add your release notes here.
-            - Use `git log` to see commits since the last version, or manually input the changelog.
-          draft: false
-          prerelease: false
-
+          body: "Automated release for version ${{ github.event.release.tag_name }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
