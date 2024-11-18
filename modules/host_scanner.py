@@ -332,7 +332,7 @@ def get_int_input(prompt, default=None):
     except ValueError:
         sys.exit(Fore.RED + "Invalid input. Please enter a valid integer.")
 
-def advance_main():
+def bugscanner_main():
     
     # Input prompts
     filename = get_input(Fore.CYAN + " ➜  Enter filename containing host list: ").strip()

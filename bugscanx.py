@@ -1,10 +1,6 @@
 import os
 import subprocess
 import sys
-import threading
-
-# Lock for managing file writes safely in a multi-threaded environment
-file_write_lock = threading.Lock()
 
 
 
@@ -18,11 +14,11 @@ def install_requirements():
         'colorama': 'colorama',
         'ipaddress': 'ipaddress',
         'pyfiglet': 'pyfiglet',
-        'socket': 'socket',
         'ssl': 'ssl',
         'beautifulsoup4': 'bs4',
         'dnspython': 'dns',
-        'multithreading': 'multithreading'
+        'multithreading': 'multithreading',
+        'loguru': 'loguru'
     }
 
     # Iterating through each required package and checking for installation
@@ -106,7 +102,7 @@ def main_menu():
     while True:
         banner()
         print(Fore.LIGHTCYAN_EX + Style.BRIGHT + "Please select an option:"+ Style.RESET_ALL)
-        print(Fore.LIGHTYELLOW_EX + Style.BRIGHT + " [1] ⚡  Host Scanner(only for pro)")
+        print(Fore.LIGHTYELLOW_EX + Style.BRIGHT + "\n [1] ⚡  Host Scanner(only for pro)")
         print(Fore.LIGHTYELLOW_EX + " [2] 🖥️   Subdomains Scanner ")
         print(Fore.LIGHTYELLOW_EX + " [3] 📡  IP Addresses Scanner")
         print(Fore.LIGHTYELLOW_EX + " [4] 🌐  Subdomains Finder")
@@ -125,10 +121,10 @@ def main_menu():
             clear_screen()
             print(text_to_ascii_banner("HOST Scanner", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
             import modules.host_scanner as host_scanner
-            host_scanner.advance_main()
+            host_scanner.bugscanner_main()
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
-        if choice == "2":
+        elif choice == "2":
             clear_screen()
             print(text_to_ascii_banner("HOST Scanner", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
             import modules.sub_scan as sub_scan
@@ -142,12 +138,12 @@ def main_menu():
             clear_screen()
             print(text_to_ascii_banner("IP Scanner  ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
             import modules.ip_scan as ip_scan
-            hosts, ports, output_file, threads, method = ip_scan.get_scan_inputs()
+            hosts, ports, output_file, threads, method = ip_scan.get2_scan_inputs()
 
             if hosts is None:
                 continue
 
-            ip_scan.perform_scan(hosts, ports, output_file, threads, method)
+            ip_scan.perform2_scan(hosts, ports, output_file, threads, method)
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
         elif choice == "4":
@@ -207,10 +203,6 @@ def main_menu():
             print(Fore.RED + Style.BRIGHT + "\n⚠️ Invalid choice. Please select a valid option.")
             input(Fore.YELLOW + Style.BRIGHT + "\n Press Enter to return to the main menu...")
             main_menu() 
-
-def new_func(hosts, ports, output_file, threads, method):
-    if not all([hosts, ports, output_file, threads, method]):
-        print(Fore.YELLOW + "Returning to main menu...") # Reload the menu for a new choice
 
 
 

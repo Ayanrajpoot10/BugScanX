@@ -74,7 +74,7 @@ def get_http_method():
     return method if method in methods else "HEAD"
 
 
-def get_scan_inputs():
+def get2_scan_inputs():
     """Handles user input for CIDRs, ports, output file, and threads for scanning."""
     invalid_attempts = 0
     hosts = []
@@ -141,7 +141,7 @@ def get_scan_inputs():
             
     http_method = get_http_method()  
 
-    return hosts, ports, output_file, threads, http_method,  # Assuming None as placeholder for http_method or similar
+    return hosts, ports, output_file, threads, http_method,
 
 
 def format_row(code, server, port, host, use_colors=True):
@@ -170,7 +170,7 @@ def check_http_response(host, port, method):
         return None
 
 
-def perform_scan(hosts, ports, output_file, threads, method):
+def perform2_scan(hosts, ports, output_file, threads, method):
     """Performs the scan on specified hosts and ports using multithreading."""
     clear_screen()
     print(Fore.GREEN + f"🔍 Scanning using HTTP method: {method}...")

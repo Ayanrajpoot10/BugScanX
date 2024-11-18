@@ -16,8 +16,8 @@ init(autoreset=True)
 file_write_lock = threading.Lock()
 
 # List of common user-agent strings to simulate browser requests
-USER_AGENTS = [
-    # User-Agent strings for different browsers and platforms
+
+USER_AGENTS = [ 
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0",
@@ -52,7 +52,6 @@ USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Trident/7.0; .NET4.0; .NET4.6; .NET4.5; .NET4.7) like Gecko"
 ]
 
-# Extra headers to mimic a real-world request
 EXTRA_HEADERS = { 
     "X-Originating-IP": "127.0.0.1",
     "X-Forwarded-For": "127.0.0.1",
@@ -63,24 +62,22 @@ EXTRA_HEADERS = {
     "X-Forwarded-Host": "127.0.0.1"
 }
 
-# Function to fetch subdomains using RapidDNS
 def fetch_rapiddns(ip):
     base_url = f"https://rapiddns.io/sameip/{ip}"
     headers = {
-        "User-Agent": random.choice(USER_AGENTS),  # Randomize User-Agent for each request
+        "User-Agent": random.choice(USER_AGENTS),
         **EXTRA_HEADERS
     }
-    time.sleep(random.uniform(1, 3))  # Random delay between requests to avoid being blocked
+    time.sleep(random.uniform(1, 3))  # Delay before request
     try:
-        response = requests.get(base_url, headers=headers, timeout=10)  # Send GET request
-        response.raise_for_status()  # Raise an exception for HTTP error responses
-        soup = BeautifulSoup(response.content, 'html.parser')  # Parse HTML content
-        # Extract the first column of each row as subdomains
+        response = requests.get(base_url, headers=headers, timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, 'html.parser')
         return [row.find_all('td')[0].text.strip() for row in soup.find_all('tr') if row.find_all('td')]
     except requests.RequestException:
-        return []  # Return an empty list if the request fails
+        return []
 
-# Function to fetch subdomains using YouGetSignal
+
 def fetch_yougetsignal(ip):
     url = "https://domains.yougetsignal.com/domains.php"
     data = {
@@ -95,88 +92,88 @@ def fetch_yougetsignal(ip):
     }
 
     try:
-        response = requests.post(url, data=data, headers=headers, timeout=10)  # Send POST request
-        response.raise_for_status()  # Raise an exception for HTTP error responses
-        # Return the domain list from the response
+        response = requests.post(url, data=data, headers=headers, timeout=10)
+        response.raise_for_status()
         return [domain[0] for domain in response.json().get("domainArray", [])]
     except requests.RequestException:
-        return []  # Return an empty list if the request fails
+        return []
 
-# Function to fetch subdomains using Bing search engine
+
 def fetch_bing(ip):
     base_url = f"https://www.bing.com/search?q=ip%3A{ip}"
-    time.sleep(random.uniform(1, 3))  # Random delay between requests to avoid being blocked
+    time.sleep(random.uniform(1, 3))  # Delay before request
     try:
-        response = requests.get(base_url, headers={"User-Agent": random.choice(USER_AGENTS)}, timeout=10)  # Send GET request
-        soup = BeautifulSoup(response.content, 'html.parser')  # Parse HTML content
-        # Extract domains from search results
+        response = requests.get(base_url, headers={"User-Agent": random.choice(USER_AGENTS)}, timeout=10)
+        soup = BeautifulSoup(response.content, 'html.parser')
         return [title['href'].split('/')[2] for row in soup.find_all('li', class_='b_algo') if (title := row.find('a'))]
     except requests.RequestException:
-        return []  # Return an empty list if the request fails
+        return []
 
-# Function to collect domains for a given IP by calling multiple fetch functions
-def extract_domains_for_ip(ip, output_file):
+
+
+
+def extract_domains_for_ip(ip):
     domains = []
     print(Fore.CYAN + f"🔎 Searching domains for IP: {ip}")
     
-    # Fetch domains from multiple sources
+    # Fetch from all sources
     domains += fetch_rapiddns(ip)
     domains += fetch_yougetsignal(ip)
     domains += fetch_bing(ip)
 
-    # Remove duplicates by converting the list to a set and back to a sorted list
+    # Remove duplicates using set
     domains = sorted(set(domains))
-
-    # Return the domains found for the IP
+    
+    # Display only the number of domains found
+    print(Fore.GREEN + f"✔️ Domains found for IP {ip}: {len(domains)}")
+    
     return (ip, domains)
 
-# Function to save results to a file
 def save_results_to_file(results, output_file):
+    total_domains_found = 0  # Track the total number of domains found
     with open(output_file, 'a') as f:
         for ip, domains in results:
             total_found = len(domains)
+            total_domains_found += total_found
             f.write(f"Domains found for IP {ip}: {total_found}\n")
             for domain in domains:
                 f.write(f"{domain}\n")
+    print(Fore.GREEN + f"\n✅ Saved! Current total domains found across processed IPs: {total_domains_found}")
 
-# Function to process a CIDR block and add each host IP to the queue
 def process_cidr(cidr, ip_queue):
     try:
         network = ipaddress.ip_network(cidr, strict=False)
-        for ip in network.hosts():  # Iterate over each host in the network
-            ip_queue.put(str(ip))  # Add each IP address to the queue
+        for ip in network.hosts():
+            ip_queue.put(str(ip))
     except ValueError as e:
         print(f"Invalid CIDR block {cidr}: {e}")
 
-# Function to handle the IP lookup menu
 def Ip_lockup_menu():
-    # Prompt the user for input: IP/CIDR or filename containing IPs
     cidr_or_filename = get_input(Fore.CYAN + " ➜  Enter an IP or CIDR or file containing IPs/CIDRs: ")
     output_file = get_input(Fore.CYAN + " ➜  Enter the output file path: ")
 
-    ip_queue = Queue()  # Queue to store the IP addresses to be processed
+    ip_queue = Queue()
 
-    # Check if the input is a CIDR block or a file
-    if '/' in cidr_or_filename:  # If input is a CIDR block
+    if '/' in cidr_or_filename:  # Check if input is CIDR
         try:
             ipaddress.ip_network(cidr_or_filename, strict=False)
-            process_cidr(cidr_or_filename, ip_queue)  # Process the CIDR and add IPs to queue
+            process_cidr(cidr_or_filename, ip_queue)
         except ValueError:
             print(Fore.RED + f"❌ Invalid CIDR: {cidr_or_filename}")
             return
     else:
         try:
-            ip = ipaddress.ip_address(cidr_or_filename)  # Check if the input is a valid IP address
-            ip_queue.put(str(ip))  # Add the IP to the queue
+            ip = ipaddress.ip_address(cidr_or_filename)
+            ip_queue.put(str(ip))
         except ValueError:
             try:
-                with open(cidr_or_filename, 'r') as f:  # If input is a file, read and process each line
+                with open(cidr_or_filename, 'r') as f:
                     for line in f:
                         entry = line.strip()
                         if entry:
                             try:
-                                ip = ipaddress.ip_address(entry)  # Validate the IP address
-                                ip_queue.put(str(ip))  # Add the IP to the queue
+                                ip = ipaddress.ip_address(entry)
+                                ip_queue.put(str(ip))
                             except ValueError:
                                 print(Fore.RED + f"❌ Invalid IP address: {entry}")
             except FileNotFoundError:
@@ -186,12 +183,12 @@ def Ip_lockup_menu():
                 print(Fore.RED + f"❌ An error occurred: {e}")
                 return
 
-    total_ips = ip_queue.qsize()  # Get the total number of IPs in the queue
+    total_ips = ip_queue.qsize()
     if total_ips == 0:
         print(Fore.RED + "⚠️ No valid IPs/CIDRs to process.")
         return
 
-    # Get the number of threads from the user
+    # Get number of threads from the user
     while True:
         threads_input = get_input(Fore.CYAN + " ➜  Enter the number of threads to use (1-5): ").strip()
         if threads_input.isdigit():
@@ -204,11 +201,20 @@ def Ip_lockup_menu():
             print(Fore.RED + "⚠️ Invalid input. Please enter a valid integer.")
 
     results = []
+    progress = 0  # Initialize progress counter
+
     with ThreadPoolExecutor(max_workers=threads) as executor:
-        # Submit tasks to the thread pool to process each IP asynchronously
-        futures = [executor.submit(extract_domains_for_ip, ip_queue.get(), output_file) for _ in range(total_ips)]
-        for future in futures:
-            results.append(future.result())  # Collect the results as they are completed
+        futures = [executor.submit(extract_domains_for_ip, ip_queue.get()) for _ in range(total_ips)]
+        
+        for i, future in enumerate(futures, start=1):
+            results.append(future.result())
+            progress += 1
+
+            # Update progress and save results to file every 5 IPs
+            if i % 5 == 0 or i == total_ips:
+                percent_complete = (progress / total_ips) * 100
+                print(Fore.YELLOW + f"\r⏳ Progress: {progress}/{total_ips} IPs processed ({percent_complete:.2f}%)", end="")
+                save_results_to_file(results[-5:], output_file)  # Save only the last 5 results to the file
     
-    # Save all results to the output file once processing is complete
-    save_results_to_file(results, output_file)
+    print()  # Move to the next line after the final progress bar update
+    print(Fore.GREEN + "\n🎉 All IPs processed!")
