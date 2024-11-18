@@ -9,7 +9,7 @@ import concurrent
 # Initialize colorama for colored terminal output
 init(autoreset=True)
 
-from modules.sub_scan import get_input
+from bugscanx.sub_scan import get_input
 
 # Lock for file writing (not currently used in this snippet)
 file_write_lock = threading.Lock()

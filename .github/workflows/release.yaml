@@ -1,0 +1,56 @@
+name: Release Workflow
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # This triggers on version tag pushes like v0.1, v0.2, etc.
+
+jobs:
+  release:
+    runs-on: ubuntu-latest  # The runner will be Ubuntu, which is commonly used in GitHub Actions.
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python (ensure the correct version)
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'  # Adjust based on your required Python version
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Install your dependencies
+          pip install setuptools wheel twine  # For packaging and uploading to PyPI
+
+      # Step 4: Build the package (this creates the .tar.gz and .whl files)
+      - name: Build package
+        run: |
+          python setup.py sdist bdist_wheel
+
+      # Step 5: Upload package to PyPI using Twine
+      - name: Upload to PyPI
+        run: |
+          python -m twine upload dist/*  # Upload to PyPI (requires TWINE_USERNAME and TWINE_PASSWORD)
+
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}  # Set these in GitHub Secrets
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+
+      # Step 6: Create a GitHub Release
+      - name: Create Release
+        uses: ghcli/gh-release-action@v1  # Action to create a release
+        with:
+          tag_name: ${{ github.ref }}  # Use the tag name (e.g., v0.1)
+          release_name: Release ${{ github.ref }}
+          body: |
+            ## Changelog
+            - Add your release notes here.
+            - Use `git log` to see commits since the last version, or manually input the changelog.
+          draft: false
+          prerelease: false
+
