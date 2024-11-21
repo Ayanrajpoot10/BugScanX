@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="BugScanX",
-    version="0.1.0",  # Semantic versioning: major.minor.patch
+    version="1.0.1",  # Semantic versioning: major.minor.patch
     author="Ayan Rajpoot",
     author_email="ayanrajpoot2004@gmail.com",
     description="All in one toolkit for SNI bughost analysis",

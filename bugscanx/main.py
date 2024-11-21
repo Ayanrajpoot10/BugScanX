@@ -122,14 +122,22 @@ def main_menu():
         if choice == '1':
             clear_screen()
             print(text_to_ascii_banner("HOST Scanner", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            import bugscanx.host_scanner as host_scanner
-            host_scanner.bugscanner_main()
+            try:
+                from bugscanx import host_scanner as host_scanner
+                host_scanner.bugscanner_main()
+            except ImportError:
+                import host_scanner
+                host_scanner.bugscanner_main()
+            
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
         elif choice == "2":
             clear_screen()
             print(text_to_ascii_banner("HOST Scanner", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            import bugscanx.sub_scan as sub_scan
+            try:
+                from bugscanx import sub_scan as sub_scan
+            except ImportError:
+                import sub_scan
             hosts, ports, output_file, threads, method = sub_scan.get1_scan_inputs()
             if hosts is None:
                 continue
@@ -139,7 +147,10 @@ def main_menu():
         elif choice == "3":
             clear_screen()
             print(text_to_ascii_banner("IP Scanner  ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            import bugscanx.ip_scan as ip_scan
+            try:
+                from bugscanx import ip_scan as ip_scan
+            except ImportError:
+                import ip_scan
             hosts, ports, output_file, threads, method = ip_scan.get2_scan_inputs()
 
             if hosts is None:
@@ -151,14 +162,20 @@ def main_menu():
         elif choice == "4":
             clear_screen()
             print(text_to_ascii_banner("Subfinder ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            import bugscanx.sub_finder as sub_finder
+            try:
+                from bugscanx import sub_finder as sub_finder
+            except ImportError:
+                import sub_finder
             sub_finder.find_subdomains()
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
         elif choice == "5":
             clear_screen()
             print(text_to_ascii_banner("IP LookUP ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            import bugscanx.ip_lookup as ip_lookup
+            try:
+                from bugscanx import ip_lookup as ip_lookup
+            except ImportError:
+                import ip_lookup
             ip_lookup.Ip_lockup_menu()
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
@@ -166,35 +183,51 @@ def main_menu():
         elif choice =="6":
             clear_screen()
             print(text_to_ascii_banner("TxT Toolkit ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            import bugscanx.txt_toolkit as txt_toolkit
+            try:
+                from bugscanx import txt_toolkit as txt_toolkit
+            except ImportError:
+                import txt_toolkit
             txt_toolkit.txt_toolkit_main_menu()
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
         elif choice == "7":
             clear_screen()
             print(text_to_ascii_banner("Open Port ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            import bugscanx.open_port as open_port
+            try:
+                from bugscanx import open_port as open_port
+            except ImportError:
+                import open_port
             open_port.open_port_checker()
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
         elif choice == "8":
             clear_screen()
             print(text_to_ascii_banner("DNS Records ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
+            try:
+                from bugscanx import dns_info as dns_info
+            except ImportError:
+                import dns_info
             domain = get_input(Fore.CYAN + " ➜  Enter a domain to perform NSLOOKUP: ").strip()
-            import bugscanx.dns_info as dns_info
             dns_info.nslookup(domain)
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
         elif choice == "9":
             clear_screen()
             print(text_to_ascii_banner("OSINT ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            import bugscanx.osint as osint
+            try:
+                from bugscanx import osint as osint
+            except ImportError:
+                import osint
             osint.osint_main()
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
         elif choice == "10":
             clear_screen()
-            import bugscanx.script_help as script_help
+            print(text_to_ascii_banner("Help ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
+            try:
+                from bugscanx import script_help as script_help
+            except ImportError:
+                import script_help
             script_help.show_help()
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 
@@ -205,7 +238,10 @@ def main_menu():
         elif choice == "0":
             clear_screen()
             print(text_to_ascii_banner("Update Menu", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            import check_update
+            try:
+                from bugscanx import check_update as check_update
+            except ImportError:
+                import check_update
             check_update.update_menu()
             input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
 

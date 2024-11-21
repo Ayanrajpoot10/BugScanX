@@ -5,7 +5,7 @@ import threading
 from colorama import Fore, init
 import socket
 init(autoreset=True)
-from bugscanx.sub_scan import get_input
+from sub_scan import get_input
 file_write_lock = threading.Lock()
 
 
