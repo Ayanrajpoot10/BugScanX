@@ -6,7 +6,7 @@ import requests
 from colorama import Fore, Style, Back, init
 from bs4 import BeautifulSoup
 init(autoreset=True)
-from sub_scan import get_input
+from bugscanx.sub_scan import get_input
 file_write_lock = threading.Lock()
 
 # Session object for persistent HTTP requests

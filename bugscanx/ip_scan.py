@@ -8,7 +8,7 @@ from colorama import Fore, Style, Back, init
 import ipaddress
 init(autoreset=True)
 file_write_lock = threading.Lock()
-from sub_scan import clear_screen, file_manager, get_input
+from bugscanx.sub_scan import get_input, clear_screen, file_manager
 
 
 DEFAULT_TIMEOUT1 = 5  # Default timeout for HTTP requests
