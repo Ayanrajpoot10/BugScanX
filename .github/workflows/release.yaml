@@ -1,6 +1,11 @@
 name: Publish to PyPI and Create GitHub Release
 
 on:
+  # Trigger on tag creation
+  push:
+    tags:
+      - '*'
+
   # Manual trigger
   workflow_dispatch:
     inputs:
@@ -8,11 +13,6 @@ on:
         description: 'Version to release'
         required: true
         default: 'v1.0.0'
-
-  # Trigger on release creation
-  release:
-    types:
-      - created
 
 jobs:
   deploy:
@@ -42,13 +42,12 @@ jobs:
 
       # Step 5: Publish to PyPI
       - name: Publish to PyPI
-        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           python3 -m twine upload dist/*
-
 
       # Step 6: Create GitHub Release
       - name: Create GitHub Release
