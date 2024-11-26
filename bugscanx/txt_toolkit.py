@@ -6,7 +6,7 @@ from colorama import Fore, Style, Back, init
 import socket
 from collections import defaultdict
 init(autoreset=True)
-from bugscanx.sub_scan import get_input
+from bugscanx.import_modules import get_input
 file_write_lock = threading.Lock()
 
 def split_txt_file(file_path, parts):

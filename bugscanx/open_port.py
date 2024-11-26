@@ -5,7 +5,7 @@ import threading
 from colorama import Fore, init
 import socket
 init(autoreset=True)
-from bugscanx.sub_scan import get_input
+from bugscanx.import_modules import get_input
 file_write_lock = threading.Lock()
 
 
@@ -25,7 +25,7 @@ def check_port(ip, port):
 # Main function for the port checker
 def open_port_checker():
     # Get user input for IP/hostname
-    target = get_input(Fore.CYAN + "➜  Enter the IP address or hostname to scan: ").strip()
+    target = get_input(Fore.CYAN + "»  Enter the IP address or hostname to scan: ").strip()
     if not target:
         print(Fore.RED + "⚠️ IP or hostname cannot be empty.")
         return
@@ -42,7 +42,7 @@ def open_port_checker():
     choice = get_input(Fore.YELLOW + "\nSelect scan type:\n"
                                  "1. 🥭 Scan common ports\n"
                                  "2. 🌐 Scan all ports (1-65535)\n"
-                                 " ➜  Enter your choice (1 or 2): ").strip()
+                                 " »  Enter your choice (1 or 2): ").strip()
     if choice == "1":
         ports = COMMON_PORTS
         print(Fore.GREEN + "\n🚀 Starting scan on common ports...")

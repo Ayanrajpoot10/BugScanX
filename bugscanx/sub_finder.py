@@ -6,7 +6,7 @@ import requests
 from colorama import Fore, Style, Back, init
 from bs4 import BeautifulSoup
 init(autoreset=True)
-from bugscanx.sub_scan import get_input
+from bugscanx.import_modules import get_input
 file_write_lock = threading.Lock()
 
 # Session object for persistent HTTP requests
@@ -180,10 +180,10 @@ def process_domain(domain, output_file, sources):
 
 def find_subdomains():
     """Main function to find subdomains either from a single domain or multiple from a file."""
-    input_choice = get_input(Fore.CYAN + " \n ➜  Enter '1' for single domain or '2' for multiple from txt file: ").strip()
+    input_choice = get_input(Fore.CYAN + " \n »  Enter '1' for single domain or '2' for multiple from txt file: ").strip()
     
     if input_choice == '1':
-        domain = get_input(Fore.CYAN + "\n ➜  Enter the domain to find subdomains for: ").strip()
+        domain = get_input(Fore.CYAN + "\n »  Enter the domain to find subdomains for: ").strip()
         if not domain:
             print(Fore.RED + "\n⚠️ Domain cannot be empty.")
             return
@@ -196,7 +196,7 @@ def find_subdomains():
         default_filename = f"{domain}_subdomains.txt"
         
     elif input_choice == '2':
-        file_path = get_input(Fore.CYAN + "\n ➜  Enter the path to the file containing domains: ").strip()
+        file_path = get_input(Fore.CYAN + "\n »  Enter the path to the file containing domains: ").strip()
         try:
             with open(file_path, 'r') as file:
                 domains_to_process = [line.strip() for line in file if line.strip()]
@@ -217,7 +217,7 @@ def find_subdomains():
         print(Fore.RED + "\n⚠️ Invalid choice.")
         return
 
-    output_file = get_input(Fore.CYAN + "\n ➜ Enter the output file name (without extension): ").strip()
+    output_file = get_input(Fore.CYAN + "\n » Enter the output file name (without extension): ").strip()
     # Use default filename if user input is empty
     output_file = output_file + "_subdomains.txt" if output_file else default_filename
 

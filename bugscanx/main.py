@@ -68,7 +68,6 @@ def text_to_ascii_banner(text, font="doom", color=Fore.WHITE):
         return "Font not found. Please choose a valid font."
 
 
-
 def get_input(prompt, default=None):
     """
     Utility function to get user input with a prompt.
@@ -87,9 +86,10 @@ def banner():
     clear_screen()
     # Display the ASCII banner with the tool name
     print(text_to_ascii_banner("BugScanX ", font="doom", color=Style.BRIGHT + Fore.MAGENTA))
-    print(Fore.MAGENTA + "  ©️ Owner: " + Fore.LIGHTMAGENTA_EX + Style.BRIGHT + "Ayan Rajpoot")
+    print(Fore.LIGHTMAGENTA_EX + " 🏷️  Version: " + Fore.WHITE + Style.BRIGHT + "1.0.3")
+    print(Fore.MAGENTA + "  ©️ Owner: " + Fore.LIGHTMAGENTA_EX + Style.BRIGHT + "Ayan Rajpoot ™")
     print(Fore.BLUE + " 🔗 Support: " + Style.BRIGHT + Fore.LIGHTBLUE_EX + "https://t.me/BugScanX")
-    print(Fore.WHITE + Style.DIM +"\nThis is a test version. Report bugs on Telegram for quick fixes")
+    print(Fore.WHITE + Style.DIM +"\n This is a test version. Report bugs on Telegram for quick fixes")
     print(Style.RESET_ALL)
 
 
@@ -97,26 +97,27 @@ def banner():
 def main_menu():
     """
     Main menu loop for the BugScanX toolkit, allowing users to select different scanning and OSINT options.
-    Each option will run a specific scan or tool from the 'modules' directory.
+    Each option has a unique text-based icon for better representation and alignment.
     """
     while True:
         banner()
         print(Fore.LIGHTCYAN_EX + Style.BRIGHT + "Please select an option:"+ Style.RESET_ALL)
-        print(Fore.LIGHTYELLOW_EX + Style.BRIGHT + "\n [1] ⚡  Host Scanner(only for pro)")
-        print(Fore.LIGHTYELLOW_EX + " [2] 🖥️   Subdomains Scanner ")
-        print(Fore.LIGHTYELLOW_EX + " [3] 📡  IP Addresses Scanner")
-        print(Fore.LIGHTYELLOW_EX + " [4] 🌐  Subdomains Finder")
-        print(Fore.LIGHTYELLOW_EX + " [5] 🔍  domains hosted on same ip")
+        print(Fore.LIGHTYELLOW_EX + Style.BRIGHT + "\n [1] ⚡  Host Scanner(pro mode)")
+        print(Fore.LIGHTYELLOW_EX + " [2] 🌐  Subdomains Scanner ")
+        print(Fore.LIGHTYELLOW_EX + " [3] 📡  CIDR Scanner")
+        print(Fore.LIGHTYELLOW_EX + " [4] 🔍  Subdomains Finder")
+        print(Fore.LIGHTYELLOW_EX + " [5] 🔎  IP to domains")
         print(Fore.LIGHTYELLOW_EX + " [6] ✂️   TXT Toolkit")
         print(Fore.LIGHTYELLOW_EX + " [7] 🔓  Open Port Checker")
         print(Fore.LIGHTYELLOW_EX + " [8] 📜  DNS Records")
         print(Fore.LIGHTYELLOW_EX + " [9] 💡  OSINT ")
-        print(Fore.LIGHTYELLOW_EX + " [10] 📖  Help")
+        print(Fore.LIGHTYELLOW_EX + " [10]❓  Help")
         print(Fore.LIGHTRED_EX + Style.BRIGHT + " [11]⛔  Exit" + Style.RESET_ALL)
         print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT + " [0] 🔄️  Update\n" + Style.RESET_ALL)
 
         # Get the user's choice
-        choice = get_input(Fore.CYAN + " ➜  Enter your choice (0-11): ").strip()
+        choice = get_input(Fore.CYAN + " »  Enter your choice (0-11): ").strip()
+
 
 
         if choice == '1':
@@ -129,11 +130,11 @@ def main_menu():
                 import host_scanner
                 host_scanner.bugscanner_main()
             
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
         elif choice == "2":
             clear_screen()
-            print(text_to_ascii_banner("HOST Scanner", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
+            print(text_to_ascii_banner("Sub Scanner", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
             try:
                 from bugscanx import sub_scan as sub_scan
             except ImportError:
@@ -142,11 +143,11 @@ def main_menu():
             if hosts is None:
                 continue
             sub_scan.perform1_scan(hosts, ports, output_file, threads, method)
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
         elif choice == "3":
             clear_screen()
-            print(text_to_ascii_banner("IP Scanner  ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
+            print(text_to_ascii_banner("CIDR Scanner  ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
             try:
                 from bugscanx import ip_scan as ip_scan
             except ImportError:
@@ -157,7 +158,7 @@ def main_menu():
                 continue
 
             ip_scan.perform2_scan(hosts, ports, output_file, threads, method)
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
         elif choice == "4":
             clear_screen()
@@ -167,7 +168,7 @@ def main_menu():
             except ImportError:
                 import sub_finder
             sub_finder.find_subdomains()
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
         elif choice == "5":
             clear_screen()
@@ -177,7 +178,7 @@ def main_menu():
             except ImportError:
                 import ip_lookup
             ip_lookup.Ip_lockup_menu()
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
 
         elif choice =="6":
@@ -188,7 +189,7 @@ def main_menu():
             except ImportError:
                 import txt_toolkit
             txt_toolkit.txt_toolkit_main_menu()
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
         elif choice == "7":
             clear_screen()
@@ -198,7 +199,7 @@ def main_menu():
             except ImportError:
                 import open_port
             open_port.open_port_checker()
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
         elif choice == "8":
             clear_screen()
@@ -207,9 +208,9 @@ def main_menu():
                 from bugscanx import dns_info as dns_info
             except ImportError:
                 import dns_info
-            domain = get_input(Fore.CYAN + " ➜  Enter a domain to perform NSLOOKUP: ").strip()
+            domain = get_input(Fore.CYAN + " »  Enter a domain to perform NSLOOKUP: ").strip()
             dns_info.nslookup(domain)
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
         elif choice == "9":
             clear_screen()
@@ -219,17 +220,17 @@ def main_menu():
             except ImportError:
                 import osint
             osint.osint_main()
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
         elif choice == "10":
             clear_screen()
-            print(text_to_ascii_banner("Help ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
+            print(text_to_ascii_banner("Help Menu", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
             try:
                 from bugscanx import script_help as script_help
             except ImportError:
                 import script_help
             script_help.show_help()
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
         elif choice == "11":
             print(Fore.RED + Style.BRIGHT + "\n🔴 Shutting down the toolkit. See you next time!")
@@ -243,7 +244,7 @@ def main_menu():
             except ImportError:
                 import check_update
             check_update.update_menu()
-            input(Fore.YELLOW + "\n Press Enter to return to the main menu...")
+            input(Fore.YELLOW + "\n🚩 Press Enter to return to the main menu...")
 
         else:
             print(Fore.RED + Style.BRIGHT + "\n⚠️ Invalid choice. Please select a valid option.")

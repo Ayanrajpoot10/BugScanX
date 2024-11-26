@@ -35,7 +35,7 @@ def get_hosts_from_file(file_path):
 def get1_http_method():
     methods = ['GET', 'POST', 'PATCH', 'OPTIONS', 'PUT', 'DELETE', 'TRACE', 'HEAD']
     print(Fore.LIGHTCYAN_EX + Style.BRIGHT + "🌐 Available HTTP methods: " + ", ".join(methods))
-    method = get_input(Fore.CYAN+"\n ➜  Select an HTTP method (default: HEAD): ", "HEAD").upper()
+    method = get_input(Fore.CYAN+"\n »  Select an HTTP method (default: HEAD): ", "HEAD").upper()
     return method if method in methods else "HEAD"
 
 
@@ -76,7 +76,7 @@ def file_manager(start_dir, max_up_levels=None, max_invalid_attempts=3):
 
         print(Fore.LIGHTBLUE_EX +"\n0. " + Fore.LIGHTBLUE_EX + " ↑ Move up a directory" + Style.RESET_ALL)
 
-        file_selection = get_input(Fore.CYAN + " ➜  Enter the number or filename (e.g., 1 or domain.txt): ").strip()
+        file_selection = get_input(Fore.CYAN + " »  Enter the number or filename (e.g., 1 or domain.txt): ").strip()
 
         if file_selection == '0':
             # Determine if moving up is allowed based on max_up_levels
@@ -139,11 +139,11 @@ def get1_scan_inputs():
         return None, None, None, None, None
 
     # Additional inputs for ports, output file, threads, and HTTP method
-    ports_input = get_input(Fore.CYAN + "➜ Enter port list (default: 80): ", "80").strip()
+    ports_input = get_input(Fore.CYAN + "» Enter port list (default: 80): ", "80").strip()
     ports = ports_input.split(',') if ports_input else ["80"]
-    output_file = get_input(Fore.CYAN + "➜ Enter output file name (default: results_inputfile.txt): ", f"results_{selected_file.name}").strip()
+    output_file = get_input(Fore.CYAN + "» Enter output file name (default: results_inputfile.txt): ", f"results_{selected_file.name}").strip()
     output_file = output_file or f"results_{selected_file.name}"
-    threads = int(get_input(Fore.CYAN + "➜ Enter number of threads (default: 50): ", "50") or "50")
+    threads = int(get_input(Fore.CYAN + "» Enter number of threads (default: 50): ", "50") or "50")
     http_method = get1_http_method()
     return hosts, ports, output_file, threads, http_method
 

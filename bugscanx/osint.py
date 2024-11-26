@@ -5,11 +5,10 @@ import socket
 import ssl
 from requests.exceptions import RequestException
 import concurrent
-
+from bugscanx.import_modules import get_input
 # Initialize colorama for colored terminal output
 init(autoreset=True)
 
-from bugscanx.sub_scan import get_input
 
 # Lock for file writing (not currently used in this snippet)
 file_write_lock = threading.Lock()
@@ -65,7 +64,7 @@ def get_sni_info(host):
 # Main function to run all the checks concurrently for a given host
 def osint_main():
     # Prompt the user for the host to analyze
-    host = get_input(Fore.CYAN + " ➜  Enter the host (without 'http' or 'https'): ").strip()
+    host = get_input(Fore.CYAN + " »  Enter the host (without 'http' or 'https'): ").strip()
     # Prepare the full URL for the host
     url = f"https://{host}"
 

@@ -7,7 +7,7 @@ import requests
 from colorama import Fore, Style, Back, init
 import ipaddress
 from bs4 import BeautifulSoup
-from bugscanx.sub_scan import get_input
+from bugscanx.import_modules import get_input
 
 # Initialize colorama for colored terminal output
 init(autoreset=True)

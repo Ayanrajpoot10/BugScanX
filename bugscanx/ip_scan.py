@@ -8,7 +8,8 @@ from colorama import Fore, Style, Back, init
 import ipaddress
 init(autoreset=True)
 file_write_lock = threading.Lock()
-from bugscanx.sub_scan import get_input, clear_screen, file_manager
+from bugscanx.sub_scan import file_manager
+from bugscanx.import_modules import get_input,clear_screen
 
 
 DEFAULT_TIMEOUT1 = 5  # Default timeout for HTTP requests
@@ -45,7 +46,7 @@ def get_cidrs_from_input():
     """Prompts the user to manually input CIDR blocks or IPs and returns a list of IPs."""
     invalid_attempts = 0
     while True:
-        cidr_input = get_input(Fore.CYAN + "➜  Enter CIDR blocks or individual IPs (comma-separated): ").strip()
+        cidr_input = get_input(Fore.CYAN + "»  Enter CIDR blocks or individual IPs (comma-separated): ").strip()
         if not cidr_input:
             print(Fore.RED + "⚠️ No input provided. Please enter valid CIDRs or IPs.")
             invalid_attempts += 1
@@ -70,7 +71,7 @@ def get_http_method():
     """Prompts for an HTTP method and validates it."""
     methods = ['GET', 'POST', 'PATCH', 'OPTIONS', 'PUT', 'DELETE', 'TRACE', 'HEAD']
     print(Fore.CYAN + "🌐 Available HTTP methods: " + ", ".join(methods))
-    method = input(Fore.CYAN + " ➜  Select an HTTP method (default: HEAD): ").strip().upper() or "HEAD"
+    method = input(Fore.CYAN + " »  Select an HTTP method (default: HEAD): ").strip().upper() or "HEAD"
     return method if method in methods else "HEAD"
 
 
@@ -116,17 +117,17 @@ def get2_scan_inputs():
             return None, None, None, None, None
 
     # Get ports with default value
-    ports_input = get_input(Fore.CYAN + " ➜  Enter port list (default: 80): ").strip()
+    ports_input = get_input(Fore.CYAN + " »  Enter port list (default: 80): ").strip()
     ports = ports_input.split(',') if ports_input else ["80"]
 
     # Get output file name with default value
-    output_file = get_input(Fore.CYAN + " ➜  Enter output file name (default: scan_results.txt): ").strip()
+    output_file = get_input(Fore.CYAN + " »  Enter output file name (default: scan_results.txt): ").strip()
     if not output_file:
         output_file = "scan_results.txt"
 
     # Get number of threads with error handling
     while True:
-        threads_input = get_input(Fore.CYAN + " ➜  Enter number of threads (default: 50): ").strip()
+        threads_input = get_input(Fore.CYAN + " »  Enter number of threads (default: 50): ").strip()
         if not threads_input:  # If input is empty, use default
             threads = 50
             break

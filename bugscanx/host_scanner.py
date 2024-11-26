@@ -313,14 +313,16 @@ def get_host_list(filename):
 
 def get_mode():
     """Prompt user to select mode and validate the input."""
-    mode = get_input(Fore.CYAN+" ➜  Select mode (direct, proxy, ssl, udp): ").strip().lower()
-    if mode not in ['direct', 'proxy', 'ssl', 'udp']:
-        sys.exit(Fore.RED+'Invalid mode! Choose from:'+Style.BRIGHT+' direct, proxy, ssl, udp.'+Style.RESET_ALL)
-    return mode
+    mode = get_input(Fore.CYAN+" »  Select mode(s) (direct, proxy, ssl, udp): ").strip().lower()
+    modes = mode.split(',')
+    invalid_modes = [m for m in modes if m not in ['direct', 'proxy', 'ssl', 'udp']]
+    if invalid_modes:
+        sys.exit(Fore.RED+'Invalid modes! Choose from:'+Style.BRIGHT+' direct, proxy, ssl, udp.'+Style.RESET_ALL)
+    return modes
 
 def get_proxy():
     """Prompt for proxy details if mode is proxy."""
-    proxy_input = get_input(Fore.CYAN+ " ➜  Enter proxy (host:port): ").strip().split(':')
+    proxy_input = get_input(Fore.CYAN+ " »  Enter proxy (host:port): ").strip().split(':')
     if len(proxy_input) != 2:
         sys.exit(Fore.RED + "Invalid proxy format. Use 'host:port'.")
     return proxy_input
@@ -335,13 +337,13 @@ def get_int_input(prompt, default=None):
 def bugscanner_main():
     
     # Input prompts
-    filename = get_input(Fore.CYAN + " ➜  Enter filename containing host list: ").strip()
+    filename = get_input(Fore.CYAN + " »  Enter filename containing host list: ").strip()
     host_list = get_host_list(filename)
     mode = get_mode()
-    method_list = get_input(Fore.CYAN + " ➜  Enter method list (e.g., head,get,post): ").split(',')
-    port_list = get_input(Fore.CYAN + " ➜  Enter port list (e.g., 80,443): ").split(',')
-    threads = get_int_input(Fore.CYAN + "  ➜ Enter number of threads: ")
-    output = get_input(Fore.CYAN + " ➜  Enter output filename (optional): ").strip() or None
+    method_list = get_input(Fore.CYAN + " »  Enter method list (e.g., head,get,post): ").split(',')
+    port_list = get_input(Fore.CYAN + " »  Enter port list (e.g., 80,443): ").split(',')
+    threads = get_int_input(Fore.CYAN + "  » Enter number of threads: ")
+    output = get_input(Fore.CYAN + " »  Enter output filename (optional): ").strip() or None
     
     # Conditionally prompt for proxy
     proxy = None
@@ -368,4 +370,5 @@ def bugscanner_main():
     scanner.threads = threads
     scanner.output = output
     scanner.start()
+
 

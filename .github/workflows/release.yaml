@@ -48,13 +48,3 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           python3 -m twine upload dist/*
-
-      # Step 6: Create GitHub Release
-      - name: Create GitHub Release
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.release_version
-        uses: softprops/action-gh-release@v1
-        with:
-          body: |
-            Automated release for version ${{ github.event.inputs.release_version }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
