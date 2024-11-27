@@ -194,7 +194,7 @@ def banner():
     clear_screen()
     # Display the ASCII banner with the tool name
     print(text_to_ascii_banner("BugScanX ", align="left",shift=1, font="doom", color=Style.BRIGHT + Fore.MAGENTA))
-    print(Fore.LIGHTMAGENTA_EX + " 🏷️  Version: " + Fore.WHITE + Style.BRIGHT + "1.0.4")
+    print(Fore.LIGHTMAGENTA_EX + " 🏷️  Version: " + Fore.WHITE + Style.BRIGHT + "1.0.5")
     print(Fore.MAGENTA + "  ©️ Owner: " + Fore.LIGHTMAGENTA_EX + Style.BRIGHT + "Ayan Rajpoot ™")
     print(Fore.BLUE + " 🔗 Support: " + Style.BRIGHT + Fore.LIGHTBLUE_EX + "https://t.me/BugScanX")
     print(Fore.WHITE + Style.DIM +"\n This is a test version. Report bugs on Telegram for quick fixes")
