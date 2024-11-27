@@ -2,6 +2,7 @@ import requests
 import subprocess
 import sys
 from colorama import Fore,Style
+from bugscanx.import_modules import get_input
 
 # Function to get the latest version of a package from PyPI
 def get_latest_version(package_name):
@@ -30,10 +31,10 @@ def update_menu():
     """Display the main menu and handle user input."""
     while True:
         print(Fore.LIGHTCYAN_EX + Style.BRIGHT + "Please select an option:" + Style.RESET_ALL)
-        print(Fore.LIGHTYELLOW_EX + "\n  1. Check for updates")
-        print(Fore.RED + "\n  2. Exit")
+        print(Fore.LIGHTYELLOW_EX + "\n  [1] Check for updates")
+        print(Fore.RED + "\n  [2] Exit")
         
-        choice = input(Fore.CYAN + "\n  Select an option: ").strip()
+        choice = get_input(Fore.CYAN + "\n » Select an option: " ,error_message=Fore.RED + "  ⚠  Please enter a valid number between 1 and 2.\n").strip()
 
         if choice == "1":
             package_name = "bugscanx"
@@ -41,7 +42,7 @@ def update_menu():
             latest_version = get_latest_version(package_name)
             if latest_version:
                 print(Fore.YELLOW + f" A new version {latest_version} is available.")
-                confirm = input(Fore.CYAN + "  Do you want to update now? (yes/no): ").strip().lower()
+                confirm = get_input(Fore.CYAN + "  Do you want to update now? (yes/no): ").strip().lower()
                 if confirm == "yes":
                     update_package(package_name)
                     break

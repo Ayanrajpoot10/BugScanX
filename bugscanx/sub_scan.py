@@ -9,19 +9,12 @@ import time
 from colorama import Fore, Style
 import requests
 file_write_lock = threading.Lock()
+from bugscanx.import_modules import get_input,clear_screen
 
 
 DEFAULT_TIMEOUT1 = 5
 EXCLUDE_LOCATIONS = ["https://jio.com/BalanceExhaust", "http://filter.ncell.com.np/nc"]
 
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-    
-def get_input(prompt, default=None):
-    response = input(prompt + Style.BRIGHT).strip()
-    print(Style.RESET_ALL)
-    return response if response else default or ""
 
 def get_hosts_from_file(file_path):
     path = Path(file_path)
@@ -52,23 +45,23 @@ def file_manager(start_dir, max_up_levels=None, max_invalid_attempts=3):
         directories_in_directory = [d for d in current_dir.iterdir() if d.is_dir()]
 
         if not files_in_directory and not directories_in_directory:
-            print(Fore.RED + "⚠️  No .txt files or directories found.")
+            print(Fore.RED + "⚠  No .txt files or directories found.")
             return None
 
-        print(Fore.CYAN + f"\n📂 Contents of '{current_dir}':")
+        print(Fore.CYAN + f"\n🗁 Contents of '{current_dir}':")
         combined_items = directories_in_directory + files_in_directory
         half = math.ceil(len(combined_items) / 2)
 
         for i in range(half):
             left_item = combined_items[i]
-            left_prefix = "📁 " if left_item.is_dir() else "📄 "
+            left_prefix = "🗀 " if left_item.is_dir() else "📄 "
             left_name = f"{Fore.YELLOW + Style.BRIGHT if left_item.is_dir() else Fore.WHITE}{left_item.name}{Style.RESET_ALL}"
             left = f"{i + 1}. {left_prefix}{left_name}"
 
             right = ""
             if i + half < len(combined_items):
                 right_item = combined_items[i + half]
-                right_prefix = "📁 " if right_item.is_dir() else "📄 "
+                right_prefix = "🗀 " if right_item.is_dir() else "📄 "
                 right_name = f"{Fore.YELLOW + Style.BRIGHT if right_item.is_dir() else Fore.WHITE}{right_item.name}{Style.RESET_ALL}"
                 right = f"{i + half + 1}. {right_prefix}{right_name}"
 
@@ -81,9 +74,9 @@ def file_manager(start_dir, max_up_levels=None, max_invalid_attempts=3):
         if file_selection == '0':
             # Determine if moving up is allowed based on max_up_levels
             if max_up_levels is not None and levels_up >= max_up_levels:
-                print(Fore.RED + "⚠️ You've reached the maximum level above the start directory.")
+                print(Fore.RED + "⚠ You've reached the maximum level above the start directory.")
             elif current_dir.parent == current_dir:
-                print(Fore.RED + "⚠️ You are at the root directory and cannot move up further.")
+                print(Fore.RED + "⚠ You are at the root directory and cannot move up further.")
             else:
                 current_dir = current_dir.parent
                 levels_up += 1
@@ -105,7 +98,7 @@ def file_manager(start_dir, max_up_levels=None, max_invalid_attempts=3):
                 sub_dirs = [d for d in current_dir.iterdir() if d.is_dir()]
                 
                 if not txt_files and not sub_dirs:
-                    print(Fore.RED + "⚠️ No .txt files or directories found in this directory. Returning to previous directory.")
+                    print(Fore.RED + "⚠ No .txt files or directories found in this directory. Returning to previous directory.")
                     current_dir = directory_stack.pop()  # Return to the previous directory
                 continue
             else:
@@ -117,11 +110,11 @@ def file_manager(start_dir, max_up_levels=None, max_invalid_attempts=3):
             if file_input.is_file() and file_input.suffix == '.txt':
                 return file_input  # Return the selected .txt file
             else:
-                print(Fore.RED + f"⚠️  File '{file_input}' not found or not a .txt file. Please try again.")
+                print(Fore.RED + f"⚠  File '{file_input}' not found or not a .txt file. Please try again.")
                 invalid_attempts += 1
 
         if invalid_attempts >= max_invalid_attempts:
-            print(Fore.RED + "⚠️ Too many invalid attempts. Returning to the main menu.")
+            print(Fore.RED + "⚠ Too many invalid attempts. Returning to the main menu.")
             return None
 
 
@@ -130,12 +123,12 @@ def get1_scan_inputs():
     selected_file = file_manager(start_dir, max_up_levels=3)  # Call the file manager
 
     if not selected_file:
-        print(Fore.RED + "⚠️ No valid file selected. Returning to main menu.")
+        print(Fore.RED + "⚠ No valid file selected. Returning to main menu.")
         return None, None, None, None, None
 
     hosts = get_hosts_from_file(selected_file)
     if not hosts:
-        print(Fore.RED + "⚠️ No valid hosts found in the file.")
+        print(Fore.RED + "⚠ No valid hosts found in the file.")
         return None, None, None, None, None
 
     # Additional inputs for ports, output file, threads, and HTTP method
@@ -239,5 +232,5 @@ def perform1_scan(hosts, ports, output_file, threads, method):
             print(Style.BRIGHT + f"Scanned {scanned_hosts}/{total_hosts} - Responded: {responded_hosts} - Elapsed: {format1_time(elapsed_time)}", end='\r')
 
     # Final message
-    print(f"\n\n{Fore.GREEN}✅ Scan completed! {responded_hosts}/{scanned_hosts} hosts responded.")
+    print(f"\n\n{Fore.GREEN}✔ Scan completed! {responded_hosts}/{scanned_hosts} hosts responded.")
     print(f"{Fore.GREEN}Results saved to {output_file}.{Style.RESET_ALL}")

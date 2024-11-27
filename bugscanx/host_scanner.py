@@ -6,17 +6,8 @@ import sys
 from colorama import Fore, Style
 import multithreading
 import requests
+from bugscanx.import_modules import get_input
 
-
-
-def get_input(prompt, default=None):
-    """
-    Utility function to get user input with a prompt.
-    Returns default if user does not provide input.
-    """
-    response = input(prompt + Style.BRIGHT).strip()
-    print(Style.RESET_ALL)
-    return response if response else default or ""
 
 
 class BugScanner(multithreading.MultiThreadRequest):
@@ -313,12 +304,11 @@ def get_host_list(filename):
 
 def get_mode():
     """Prompt user to select mode and validate the input."""
-    mode = get_input(Fore.CYAN+" »  Select mode(s) (direct, proxy, ssl, udp): ").strip().lower()
-    modes = mode.split(',')
-    invalid_modes = [m for m in modes if m not in ['direct', 'proxy', 'ssl', 'udp']]
-    if invalid_modes:
-        sys.exit(Fore.RED+'Invalid modes! Choose from:'+Style.BRIGHT+' direct, proxy, ssl, udp.'+Style.RESET_ALL)
-    return modes
+    mode = get_input(Fore.CYAN+" ➜  Select mode (direct, proxy, ssl, udp): ").strip().lower()
+    if mode not in ['direct', 'proxy', 'ssl', 'udp']:
+        sys.exit(Fore.RED+'Invalid mode! Choose from:'+Style.BRIGHT+' direct, proxy, ssl, udp.'+Style.RESET_ALL)
+    return mode
+
 
 def get_proxy():
     """Prompt for proxy details if mode is proxy."""

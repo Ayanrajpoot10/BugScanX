@@ -1,47 +1,46 @@
 
----
-
-# 🌐 BugScanX - Advanced All-in-one Toolkit for SNI Bug Host Analysis
+# 🌐 **BugScanX** - Your All-in-One SNI Bug Host Finder
 
 
-**BugScanX is a specialized toolkit by Ayan Rajpoot for identifying SNI bug hosts often used in free internet configurations. This script offers a range of utilities to hunt SNI host, Find subdomains, Iplookup, retrieve DNS records, and more.**
-
---- 
-
-## 🚀 Features
-BugScanX provides robust tools to  find SNI bug hosts:
-
-1. ⚡ **Host Checker**: Advance Host Checker for pros with multiple scanning modes and http method.
-2. **🖥️ Subdomains Scanner** - Scans subdomains to identify potential SNI bug hosts.
-3. **📡 IP Addresses Scanner** - Scans IPs to locate SNI bug hosts on specific addresses.
-4. **🌐 Subdomains Finder** - Finds active subdomains associated with a target domain.
-5. **🔍 Domains Hosted on Same IP** - Lists domains hosted on the same IP as a target.
-6. **🧰 TXT Toolkit** - Perform various task on text files, offering functionality to split, clean, remove duplicates, and much more.
-7. **🔓 Open Port Checker** - Scans open ports on a given IP or domain.
-8. **📜 DNS Records** - Fetches A, MX, TXT, and other DNS records of a domain.
-9. **💡 Host OSINT** - Performs OSINT checks for gathering open-source info on a host.
-10. **📖 Help** - Provides usage instructions for each tool.
-11. **⛔ Exit** - Cleanly exits the program.
-12. **🔄️Update** - Check and update Script to latest version
+**BugScanX** is a cutting-edge toolkit developed by **Ayan Rajpoot** for discovering and analyzing SNI bug hosts commonly found in free internet configurations. It offers a wide array of utilities, including subdomain discovery, IP lookups, DNS record retrieval, and much more.
 
 ---
 
-## 🎨 UI Design
+## 🚀 **Features**
 
-- **🌈 Colorful & Dynamic** – A bright, engaging interface that makes using the tool fun.  
-- **😊 Emoji-Powered** – Emojis are integrated throughout, adding personality and making the experience more interactive.  
-- **🚀 Modern & Minimalist** – Clean, intuitive design for a smooth, user-friendly experience.  
-- **⚡ Fast & Responsive** – Instant feedback, no lag, and optimized for smooth navigation.
+BugScanX is packed with powerful tools to streamline your SNI bug hunting process:
+
+- ⚡ **Host Checker**: A professional-grade host checker with multiple scanning modes and HTTP methods.
+- 🖥️ **Subdomains Scanner**: Detect subdomains that might indicate SNI bug hosts.
+- 📡 **IP Addresses Scanner**: Analyze specific IP addresses to find potential SNI bug hosts.
+- 🌐 **Subdomains Finder**: Identify active subdomains associated with a target domain.
+- 🔍 **Domains Hosted on Same IP**: List other domains hosted on the same IP as a given target.
+- 🧰 **TXT Toolkit**: A versatile toolkit for handling text files—split, clean, remove duplicates, and more.
+- 🔓 **Open Port Checker**: Scan for open ports on a given IP address or domain.
+- 📜 **DNS Records**: Retrieve A, MX, TXT, and other DNS records of any domain.
+- 💡 **Host OSINT**: Gather open-source intelligence (OSINT) on any host.
+- 📖 **Help**: Provides detailed usage instructions for every tool.
+- ⛔ **Exit**: Clean exit from the script.
+- 🔄️ **Update**: Check for the latest script version and update automatically.
 
 ---
 
-## 📥 Installation
+## 🎨 **UI Design**
 
-### Requirements
-Ensure Python 3.x is installed on your system.
+- 🌈 **Colorful & Dynamic**: An engaging, bright interface that makes using BugScanX a fun experience.
+- 😊 **Emoji-Powered**: Emojis are integrated throughout the script to bring a personal and interactive touch.
+- 🚀 **Modern & Minimalist**: A clean, intuitive interface for smooth, efficient navigation.
+- ⚡ **Fast & Responsive**: Optimized for high performance, providing instant feedback and a seamless experience.
 
-### Automated Dependency Installation
-BugScanX automatically installs all required modules and libraries on the first run, including:
+---
+
+## 📥 **Installation**
+
+### Prerequisites
+- **Python 3.x** should be installed on your machine.
+
+### Automatic Dependency Installation
+BugScanX will automatically install all required dependencies the first time it runs, including:
 - **requests**
 - **colorama**
 - **ipaddress**
@@ -53,7 +52,7 @@ BugScanX automatically installs all required modules and libraries on the first 
 - **loguru**
 
 ### Manual Installation (Optional)
-If you prefer to install dependencies manually, run:
+To manually install dependencies, run:
 ```bash
 pip install requests colorama ipaddress pyfiglet ssl beautifulsoup4 dnspython multithreading loguru
 ```
@@ -63,54 +62,72 @@ pip install requests colorama ipaddress pyfiglet ssl beautifulsoup4 dnspython mu
 git clone https://github.com/ayanrajpoot10/BugScanX.git
 cd BugScanX
 ```
-### Install via pip ### 
 
+### Install via `pip`:
 ```bash
 pip install bugscanx
 ```
 
---- 
+---
 
+## 🛠️ **Usage**
 
-## 🛠️ Usage
-Run the script:
-```python
+### Running the Script
+```bash
 python bugscanx.py
 ```
-If installed via pip
+
+If installed via `pip`, run:
 ```bash
 bugscanx
 ```
 
-### Menu
-Select a feature by entering its corresponding number:
+### **Menu**
+Upon running, select a feature by entering its corresponding number:
 ```plaintext
- [1] ⚡  Host Checker (Pro mode)
- [2] 🖥️  Subdomains Scanner 
- [3] 📡  IP Addresses Scanner
- [4] 🌐  Subdomains Finder
- [5] 🔍  Domains Hosted on Same IP
- [6] 🧰  TXT Toolkit
- [7] 🔓  Open Port Checker
- [8] 📜  DNS Records
- [9] 💡  HOST OSINT
- [10]📖  Help
- [11]⛔  Exit
- [0] 🔄️  Update
+ [1] ⚡ Host Checker (Pro Mode)
+ [2] 🖥️ Subdomains Scanner
+ [3] 📡 IP Addresses Scanner
+ [4] 🌐 Subdomains Finder
+ [5] 🔍 Domains Hosted on Same IP
+ [6] 🧰 TXT Toolkit
+ [7] 🔓 Open Port Checker
+ [8] 📜 DNS Records
+ [9] 💡 Host OSINT
+ [10] 📖 Help
+ [11] ⛔ Exit
+ [0] 🔄️ Update
 ```
-
-## 📘 Documentation
-Detailed documentation will available in the `docs/` directory.
-
-## 🔒 License
-This project is licensed under the MIT License.
-
-## 🤝 Contributing
-Contributions are welcome! Open an issue or submit a pull request.
-
-## 📞 Support
-For support, join our Telegram channel: [BugScanX](https://t.me/BugScanX)
 
 ---
 
-Enjoy using **BugScanX** for efficient SNI bug host discovery and network analysis!
+## 📘 **Documentation**
+
+Comprehensive documentation can be found in the `docs/` directory for further details on how to use each feature and more advanced configurations.
+
+---
+
+## 🔒 **License**
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+## 🤝 **Contributing**
+
+We welcome contributions! To contribute to BugScanX:
+1. Open an issue if you find a bug or have suggestions.
+2. Fork the repo and submit a pull request.
+
+---
+
+## 📞 **Support**
+
+For any support or questions, feel free to reach out via our [Telegram channel](https://t.me/BugScanX).
+
+---
+
+Enjoy using **BugScanX** for all your SNI bug host discovery and network analysis needs! 🚀
+
+---
+

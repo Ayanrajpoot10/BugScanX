@@ -135,7 +135,7 @@ def c99_subdomains(domain, days=10):  # Reduce days for fewer requests
 def display_progress_bar(progress, total, length=30):
     """Display a progress bar while fetching subdomains."""
     filled_length = int(length * progress // total)
-    bar = '█' * filled_length + '-' * (length - filled_length)
+    bar = '➖' * filled_length + '-' * (length - filled_length)
     percent = (progress / total) * 100
     sys.stdout.write(f'\r|{bar}| {percent:.2f}% Completed')  # Update progress bar in terminal
     sys.stdout.flush()
@@ -169,7 +169,7 @@ def process_domain(domain, output_file, sources):
         for future in as_completed(futures):
             future.result()  # Ensure each fetch is completed
 
-    print(Fore.GREEN + f"\n✅ Completed {domain} - {len(subdomains)} subdomains found")
+    print(Fore.GREEN + f"\n ✔ Completed {domain} - {len(subdomains)} subdomains found")
     
     # Write results to the output file
     with open(output_file, "a", encoding="utf-8") as file:
@@ -228,4 +228,4 @@ def find_subdomains():
         for future in as_completed(futures):
             future.result()  # Wait for each domain processing to complete
 
-    print(Fore.GREEN + f"\n✅ All results saved to {output_file}")
+    print(Fore.GREEN + f"\n✔ All results saved to {output_file}")
