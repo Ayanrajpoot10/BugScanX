@@ -2,8 +2,6 @@ import os
 import subprocess
 import sys
 
-
-
 def install_requirements():
     """
     Function to install the required Python packages.
@@ -36,18 +34,16 @@ install_requirements()
 
 from colorama import Fore, Style, Back, init
 import pyfiglet
+from updater import start_background_update
 
 # Initialize colorama to automatically reset styles after each print
 init(autoreset=True)
-
-
 
 def clear_screen():
     """
     Function to clear the terminal screen based on the operating system.
     """
     os.system('cls' if os.name == 'nt' else 'clear')
-
 
 def get_input(prompt, default=None, min_value=None, max_value=None, validator=None, error_message="Invalid input, please try again."):
     """
@@ -85,7 +81,6 @@ def get_input(prompt, default=None, min_value=None, max_value=None, validator=No
         except (KeyboardInterrupt, EOFError):
             print("\nExiting...")  # Handle Ctrl+C or Ctrl+D gracefully
             exit(0)
-
 
 
 import pyfiglet
@@ -163,10 +158,6 @@ def list_available_fonts():
     """
     return pyfiglet.getFonts()
 
-
-
-
-
 def validate_input_range(value, min_value, max_value):
     """
     Validator function to check if the input is an integer within a specified range.
@@ -194,15 +185,17 @@ def banner():
     clear_screen()
     # Display the ASCII banner with the tool name
     print(text_to_ascii_banner("BugScanX ", align="left",shift=1, font="doom", color=Style.BRIGHT + Fore.MAGENTA))
-    print(Fore.LIGHTMAGENTA_EX + " 🏷️  Version: " + Fore.WHITE + Style.BRIGHT + "1.0.5")
-    print(Fore.MAGENTA + "  ©️ Owner: " + Fore.LIGHTMAGENTA_EX + Style.BRIGHT + "Ayan Rajpoot ™")
-    print(Fore.BLUE + " 🔗 Support: " + Style.BRIGHT + Fore.LIGHTBLUE_EX + "https://t.me/BugScanX")
+    print(Fore.LIGHTMAGENTA_EX + "\n   Version: " + Fore.WHITE + Style.BRIGHT + "1.2.0")
+    print(Fore.MAGENTA + "   Owner: " + Fore.LIGHTMAGENTA_EX + Style.BRIGHT + "Ayan Rajpoot ™")
+    print(Fore.BLUE + "   Support: " + Style.BRIGHT + Fore.LIGHTBLUE_EX + "https://t.me/BugScanX")
     print(Fore.WHITE + Style.DIM +"\n This is a test version. Report bugs on Telegram for quick fixes")
     print(Style.RESET_ALL)
 
 
 
 def main_menu():
+
+    start_background_update("bugscanx")
     """
     Main menu loop for the BugScanX toolkit, allowing users to select different scanning and OSINT options.
     Each option has a unique text-based icon for better representation and alignment.
@@ -220,11 +213,10 @@ def main_menu():
         print(Fore.LIGHTYELLOW_EX + " [8] 📜  DNS Records")
         print(Fore.LIGHTYELLOW_EX + " [9] 💡  OSINT ")
         print(Fore.LIGHTYELLOW_EX + " [10]❓  Help")
-        print(Fore.LIGHTRED_EX + Style.BRIGHT + " [11]⛔  Exit" + Style.RESET_ALL)
-        print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT + " [0] 🔄️  Update\n" + Style.RESET_ALL)
+        print(Fore.LIGHTRED_EX + Style.BRIGHT + " [11]⛔  Exit\n" + Style.RESET_ALL)
 
         # Get the user's choice
-        choice = get_input(Fore.CYAN + " »  Enter your choice (0-11): ",validator=validate_input_range, min_value=0, max_value=11,error_message=Fore.RED + "  ⚠  Please enter a valid number between 0 and 11.\n").strip()
+        choice = get_input(Fore.CYAN + " »  Enter your choice (1-11): ",validator=validate_input_range, min_value=0, max_value=11,error_message=Fore.RED + "  ⚠  Please enter a valid number between 0 and 11.\n").strip()
 
 
 
@@ -232,22 +224,17 @@ def main_menu():
         if choice == '1':
             clear_screen()
             print(text_to_ascii_banner("HOST Scanner", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import host_scanner as host_scanner
-                host_scanner.bugscanner_main()
-            except ImportError:
-                import host_scanner
-                host_scanner.bugscanner_main()
+            from bugscanx import host_scanner as host_scanner
+            host_scanner.bugscanner_main()
+            host_scanner.bugscanner_main()
             
             input(Fore.YELLOW + "\n🏠︎ Press Enter to return to the main menu...")
 
         elif choice == "2":
             clear_screen()
             print(text_to_ascii_banner("Sub Scanner", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import sub_scan as sub_scan
-            except ImportError:
-                import sub_scan
+            from bugscanx import sub_scan as sub_scan
+            import sub_scan
             hosts, ports, output_file, threads, method = sub_scan.get1_scan_inputs()
             if hosts is None:
                 continue
@@ -257,10 +244,8 @@ def main_menu():
         elif choice == "3":
             clear_screen()
             print(text_to_ascii_banner("CIDR Scanner  ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import ip_scan as ip_scan
-            except ImportError:
-                import ip_scan
+            from bugscanx import ip_scan as ip_scan
+            import ip_scan
             hosts, ports, output_file, threads, method = ip_scan.get2_scan_inputs()
 
             if hosts is None:
@@ -272,20 +257,17 @@ def main_menu():
         elif choice == "4":
             clear_screen()
             print(text_to_ascii_banner("Subfinder ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import sub_finder as sub_finder
-            except ImportError:
-                import sub_finder
+            from bugscanx import sub_finder as sub_finder
+            
+            import sub_finder
             sub_finder.find_subdomains()
             input(Fore.YELLOW + "\n🏠︎ Press Enter to return to the main menu...")
 
         elif choice == "5":
             clear_screen()
             print(text_to_ascii_banner("IP LookUP ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import ip_lookup as ip_lookup
-            except ImportError:
-                import ip_lookup
+            from bugscanx import ip_lookup as ip_lookup
+            import ip_lookup
             ip_lookup.Ip_lockup_menu()
             input(Fore.YELLOW + "\n🏠︎ Press Enter to return to the main menu...")
 
@@ -293,30 +275,24 @@ def main_menu():
         elif choice =="6":
             clear_screen()
             print(text_to_ascii_banner("TxT Toolkit ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import txt_toolkit as txt_toolkit
-            except ImportError:
-                import txt_toolkit
+            from bugscanx import txt_toolkit as txt_toolkit
+            import txt_toolkit
             txt_toolkit.txt_toolkit_main_menu()
             input(Fore.YELLOW + "\n🏠︎ Press Enter to return to the main menu...")
 
         elif choice == "7":
             clear_screen()
             print(text_to_ascii_banner("Open Port ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import open_port as open_port
-            except ImportError:
-                import open_port
+            from bugscanx import open_port as open_port
+            import open_port
             open_port.open_port_checker()
             input(Fore.YELLOW + "\n🏠︎ Press Enter to return to the main menu...")
 
         elif choice == "8":
             clear_screen()
             print(text_to_ascii_banner("DNS Records ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import dns_info as dns_info
-            except ImportError:
-                import dns_info
+            from bugscanx import dns_info as dns_info
+            import dns_info
             domain = get_input(Fore.CYAN + " »  Enter a domain to perform NSLOOKUP: ").strip()
             dns_info.nslookup(domain)
             input(Fore.YELLOW + "\n🏠︎ Press Enter to return to the main menu...")
@@ -324,36 +300,22 @@ def main_menu():
         elif choice == "9":
             clear_screen()
             print(text_to_ascii_banner("OSINT ", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import osint as osint
-            except ImportError:
-                import osint
+            from bugscanx import osint as osint
+            import osint
             osint.osint_main()
             input(Fore.YELLOW + "\n🏠︎ Press Enter to return to the main menu...")
 
         elif choice == "10":
             clear_screen()
             print(text_to_ascii_banner("Help Menu", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import script_help as script_help
-            except ImportError:
-                import script_help
+            from bugscanx import script_help as script_help
+            import script_help
             script_help.show_help()
             input(Fore.YELLOW + "\n🏠︎ Press Enter to return to the main menu...")
 
         elif choice == "11":
             print(Fore.RED + Style.BRIGHT + "\n🔴 Shutting down the toolkit. See you next time!")
             sys.exit()
-
-        elif choice == "0":
-            clear_screen()
-            print(text_to_ascii_banner("Update Menu", font="doom", color=Style.BRIGHT+Fore.MAGENTA))
-            try:
-                from bugscanx import check_update as check_update
-            except ImportError:
-                import check_update
-            check_update.update_menu()
-            input(Fore.YELLOW + "\n🏠︎ Press Enter to return to the main menu...")
 
         else:
             print(Fore.RED + Style.BRIGHT + "\n⚠️ Invalid choice. Please select a valid option.")
